@@ -1,0 +1,15 @@
+<body class="d-flex h-50 text-center text-bg-dark">
+  <div class="cover-container d-flex w-100 h-100 p-1 mx-auto flex-column">
+    <app-navbar></app-navbar>
+    <main class="px-5">
+      <h1>Welcome to the BarberShop</h1>
+        <p class="lead ">Step into Style. Experience the Art of Grooming.</p>
+        <a id="teste" (click)="newBook()" class="btn btn-lg btn-light fw-bold">Book now !</a>
+    </main>
+  </div>
+  <script src="../assets/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
+<div *ngIf="bookFlag">
+<app-book></app-book>
+</div>

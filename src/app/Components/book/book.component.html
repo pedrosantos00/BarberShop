@@ -1,0 +1,105 @@
+<div class="container mt-5" id="book">
+  <h2 class="text-center">Barber Book Form</h2>
+  <form>
+    <div class="row justify-content-center">
+      <div class="col-md-6">
+
+        <div class="form-group">
+          <mat-form-field class="example-full-width">
+            <mat-label>Name</mat-label>
+            <input matInput  required placeholder="Ex. Rick Morty" >
+          </mat-form-field>
+        </div>
+
+        <div class="form-group">
+          <mat-form-field class="example-full-width">
+            <mat-label>Phone Number</mat-label>
+            <input matInput placeholder="Ex. +3519123456789" required>
+          </mat-form-field>
+        </div>
+
+        <div class="form-group">
+          <mat-form-field class="example-full-width">
+            <mat-label>Email</mat-label>
+            <input matInput placeholder="Ex. email@hotmail.com">
+          </mat-form-field>
+        </div>
+
+        <div class="form-group">
+          <mat-form-field class="example-full-width">
+            <mat-label>Observation</mat-label>
+            <textarea matInput placeholder="Ex. Don't like scissors..."></textarea>
+          </mat-form-field>
+        </div>
+
+      </div>
+
+      <div class="col-md-6">
+        <div class="form-group">
+          <mat-form-field>
+            <mat-label>Service:</mat-label>
+            <mat-select matNativeControl required [(ngModel)]="serviceCategory" name="serviceCategory " (selectionChange)="checkService(serviceCategory)">
+              <mat-option disabled value="">Select a service</mat-option>
+              <mat-option value="Haircut">Haircut - €14.00 (45min)</mat-option>
+              <mat-option value="Beard Trim">Beard Trim - €10.00 (30min)</mat-option>
+              <mat-option value="Haircut and Beard Trim">Haircut and Beard Trim - €20.00 (60min)</mat-option>
+              <mat-option value="Haircut and Eyebrow Trim">Haircut and Eyebrow Trim - €16.00 (45min)</mat-option>
+              <mat-option value="Beard Trim and Eyebrow Trim">Beard Trim and Eyebrow Trim - €12.00 (30min)</mat-option>
+              <mat-option value="Haircut, Beard Trim, and Eyebrow Trim">Haircut, Beard Trim, and Eyebrow Trim - €22.00 (60min)</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+
+      <div *ngIf="serviceCategory != undefined && serviceCategory != ''">
+          <div class="form-group">
+        <mat-form-field class="example-full-width">
+          <mat-label>Choose a date</mat-label>
+          <input matInput [matDatepickerFilter]="myFilter" [matDatepicker]="picker" required [(ngModel)]="datePicker" name="date" (dateChange)="onDateChange(datePicker)" >
+          <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+          <mat-datepicker #picker></mat-datepicker>
+        </mat-form-field>
+      </div>
+    </div>
+
+    <div *ngIf="datePicker != undefined">
+        <div class="form-group">
+          <mat-form-field >
+            <mat-label>Choose a Barber:</mat-label>
+            <mat-select matNativeControl required required [(ngModel)]="barber" name="barber" (selectionChange)="barberSelected(barber)"  >
+              <mat-option disabled value="">Select a barber</mat-option>
+              <mat-option  value="noPreference">No preference</mat-option>
+              <mat-option *ngFor="let barberOption of availability; let i = index" [value]="barberOption.barberName">{{barberOption.barberName}} </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+      </div>
+
+
+
+
+
+      <div *ngIf="barber != undefined  && barber != ''">
+        <div class="form-group">
+          <mat-form-field>
+            <mat-label>time</mat-label>
+            <mat-select matNativeControl required [(ngModel)]="scheduleTime" name="scheduleTime">
+              <mat-option  value="">Select a schedule</mat-option >
+              <mat-option *ngFor="let time of barberAvailability.availableTimeSlots; let i = index" [value]="time">{{time | date:'shortTime'}} </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+      </div>
+
+      </div>
+    </div>
+
+    <div class="row justify-content-center">
+      <p>* required</p>
+
+      <div class="col-md-6 text-center">
+        <button type="submit" (click)="submit()" class="btn btn-primary">Submit</button>
+      </div>
+    </div>
+
+  </form>
+</div>
