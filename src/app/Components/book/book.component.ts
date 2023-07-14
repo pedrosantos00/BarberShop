@@ -1,8 +1,13 @@
 import { Component } from '@angular/core';
 import { FormControl } from '@angular/forms';
+import { Appointment } from 'src/app/Models/Appointment';
 import { AvailabilityTimeSlot } from 'src/app/Models/AvailabilityTimeSlot';
 import { Barber } from 'src/app/Models/Barber';
-import { Service } from 'src/app/Models/service';
+import { Client } from 'src/app/Models/Client';
+
+
+
+import { BarberService } from 'src/app/Services/barber.service';
 import { BookService } from 'src/app/Services/book.service';
 
 @Component({
@@ -11,17 +16,14 @@ import { BookService } from 'src/app/Services/book.service';
   styleUrls: ['./book.component.css'],
 })
 export class BookComponent {
-  serviceCategory!: string;
   datePicker!: Date;
-  barber!: string;
-  scheduleTime!: string;
 
   barbers?: Barber[];
   availability! : AvailabilityTimeSlot[];
   barberAvailability!: AvailabilityTimeSlot;
-  service: Service = new Service();
+  appointment : Appointment = new Appointment();
 
-  constructor(private bookService: BookService) {}
+  constructor(private bookService: BookService, private barberService : BarberService) {}
 
   myFilter = (d: Date | null): boolean => {
     const day = (d || new Date()).getDay();
@@ -29,68 +31,79 @@ export class BookComponent {
     return day !== 0 && day !== 6;
   };
 
-  onDateChange(selectedDate: Date, time? : number): void {
-    // Call the service method to get availability based on selected date
-    this.bookService.GetBarberAvailability(selectedDate,this.service.serviceTime).subscribe(
-      (availability) => {
-        this.availability = availability;
-        // Handle the availability response data
-        console.log('Availability:', this.availability);
-        // Perform any additional actions you need with the availability data
-      },
-      (error) => {
-        console.log('An error occurred:', error);
-      }
-    );
-  }
+ onDateChange(): void {
+  this.datePicker.setHours(5);
+  // Call the service method to get availability based on the selected date and time
+  this.barberService.getBarberAvailability(this.datePicker, this.appointment.expectedTime).subscribe(
+    (availability) => {
+      this.availability = availability;
+      // Handle the availability response data
+      console.log('Availability:', this.availability);
+      // Perform any additional actions you need with the availability data
+    },
+    (error) => {
+      console.log('An error occurred:', error);
+    }
+  );
+}
+
 
   checkService(serviceCategory : string){
 
-
     switch(serviceCategory) {
       case'Haircut':
-      this.service.serviceName = serviceCategory;
-      this.service.serviceTime = 45;
-      this.service.serviceCost = 14;
+      this.appointment.service = 'Haircut';
+      this.appointment.expectedTime = 60;
+      this.appointment.cost = 14;
       break;
 
       case'Beard Trim':
-      this.service.serviceName = serviceCategory;
-      this.service.serviceTime = 30;
-      this.service.serviceCost = 10;
+      this.appointment.service = 'Beard Trim';
+      this.appointment.expectedTime = 60;
+      this.appointment.cost = 14;
       break;
 
       case'Haircut and Beard Trim':
-      this.service.serviceName = serviceCategory;
-      this.service.serviceTime = 60;
-      this.service.serviceCost = 20;
+      this.appointment.service = 'Haircut and Beard Trim';
+      this.appointment.expectedTime = 60;
+      this.appointment.cost = 14;
       break;
 
       case'Haircut and Eyebrow Trim':
-      this.service.serviceName = serviceCategory;
-      this.service.serviceTime = 45;
-      this.service.serviceCost = 16;
+      this.appointment.service = 'Haircut and Eyebrow Trim';
+      this.appointment.expectedTime = 60;
+      this.appointment.cost = 14;
       break;
 
       case'Beard Trim and Eyebrow Trim':
-      this.service.serviceName = 'Haircut';
-      this.service.serviceTime = 30;
-      this.service.serviceCost = 12;
+      this.appointment.service = 'Beard Trim and Eyebrow Trim';
+      this.appointment.expectedTime = 60;
+      this.appointment.cost = 14;
       break;
 
       case'Haircut, Beard Trim, and Eyebrow Trim':
-      this.service.serviceName = serviceCategory;
-      this.service.serviceTime = 60;
-      this.service.serviceCost = 22;
+      this.appointment.service = 'Haircut, Beard Trim, and Eyebrow Trim';
+      this.appointment.expectedTime = 60;
+      this.appointment.cost = 14;
       break;
-
     }
+
     if(this.datePicker != undefined ) {
-      this.onDateChange(this.datePicker, this.service.serviceTime);
-      this.barber = '';
+      this.onDateChange();
+      this.appointment.barber.name = '';
       //reset the select field
     }
   }
+
+  numberOnly(event : any): boolean {
+    const charCode = (event.which) ? event.which : event.keyCode;
+    if (charCode > 31 && (charCode < 48 || charCode > 57)) {
+      return false;
+    }
+    return true;
+
+  }
+
 
   barberSelected(barber: string) {
     if (barber == 'noPreference') {
@@ -122,6 +135,20 @@ export class BookComponent {
 
 
   submit() {
-    console.log(this.service);
-  }
-}
+    if(this.appointment.barber.name != 'noPreference') {
+      this.appointment.barberId = this.barberAvailability.barberId
+    }
+
+    this.bookService.bookAnAppointment(this.appointment).subscribe(
+       (ok) => {
+      console.log('Appointment done:', ok);
+    },
+    (error) => {
+      console.log('An error occurred:', error);
+    }
+
+  );
+  console.log(this.appointment);
+
+    }
+ }

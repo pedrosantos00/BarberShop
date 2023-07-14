@@ -24,6 +24,16 @@ body {
   margin-top: 40px;
 }
 
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+}
+
+/* Firefox */
+input[type=number] {
+  -moz-appearance: textfield;
+}
+
 @media (max-width: 767px) {
   .form-group.right-column {
     margin-top: 20px;

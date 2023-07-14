@@ -7,28 +7,28 @@
         <div class="form-group">
           <mat-form-field class="example-full-width">
             <mat-label>Name</mat-label>
-            <input matInput  required placeholder="Ex. Rick Morty" >
+            <input matInput [(ngModel)]="appointment.client.name"  name="name"  required placeholder="Ex. John" >
           </mat-form-field>
         </div>
 
         <div class="form-group">
           <mat-form-field class="example-full-width">
             <mat-label>Phone Number</mat-label>
-            <input matInput placeholder="Ex. +3519123456789" required>
+            <input matInput  [(ngModel)]="appointment.client.phoneNumber"  name="phoneNumber" placeholder="Ex. 9123456789"(keypress)="numberOnly($event)"  required>
           </mat-form-field>
         </div>
 
         <div class="form-group">
           <mat-form-field class="example-full-width">
             <mat-label>Email</mat-label>
-            <input matInput placeholder="Ex. email@hotmail.com">
+            <input matInput type="email"  [(ngModel)]="appointment.client.email" name="email" placeholder="Ex. email@hotmail.com">
           </mat-form-field>
         </div>
 
         <div class="form-group">
           <mat-form-field class="example-full-width">
             <mat-label>Observation</mat-label>
-            <textarea matInput placeholder="Ex. Don't like scissors..."></textarea>
+            <textarea matInput  [(ngModel)]="appointment.client.observation" name="observation" placeholder="Ex. Don't like scissors..."></textarea>
           </mat-form-field>
         </div>
 
@@ -38,34 +38,35 @@
         <div class="form-group">
           <mat-form-field>
             <mat-label>Service:</mat-label>
-            <mat-select matNativeControl required [(ngModel)]="serviceCategory" name="serviceCategory " (selectionChange)="checkService(serviceCategory)">
+            <mat-select matNativeControl required [(ngModel)]="appointment.service" name="serviceCategory " (selectionChange)="checkService(appointment.service)">
               <mat-option disabled value="">Select a service</mat-option>
-              <mat-option value="Haircut">Haircut - €14.00 (45min)</mat-option>
-              <mat-option value="Beard Trim">Beard Trim - €10.00 (30min)</mat-option>
+              <mat-option value="Haircut">Haircut - €14.00 (60min)</mat-option>
+              <mat-option value="Beard Trim">Beard Trim - €10.00 (60min)</mat-option>
               <mat-option value="Haircut and Beard Trim">Haircut and Beard Trim - €20.00 (60min)</mat-option>
-              <mat-option value="Haircut and Eyebrow Trim">Haircut and Eyebrow Trim - €16.00 (45min)</mat-option>
-              <mat-option value="Beard Trim and Eyebrow Trim">Beard Trim and Eyebrow Trim - €12.00 (30min)</mat-option>
+              <mat-option value="Haircut and Eyebrow Trim">Haircut and Eyebrow Trim - €16.00 (60min)</mat-option>
+              <mat-option value="Beard Trim and Eyebrow Trim">Beard Trim and Eyebrow Trim - €12.00 (60min)</mat-option>
               <mat-option value="Haircut, Beard Trim, and Eyebrow Trim">Haircut, Beard Trim, and Eyebrow Trim - €22.00 (60min)</mat-option>
             </mat-select>
           </mat-form-field>
         </div>
 
-      <div *ngIf="serviceCategory != undefined && serviceCategory != ''">
+        <div *ngIf="appointment.service != undefined && appointment.service != ''">
           <div class="form-group">
-        <mat-form-field class="example-full-width">
-          <mat-label>Choose a date</mat-label>
-          <input matInput [matDatepickerFilter]="myFilter" [matDatepicker]="picker" required [(ngModel)]="datePicker" name="date" (dateChange)="onDateChange(datePicker)" >
-          <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
-          <mat-datepicker #picker></mat-datepicker>
-        </mat-form-field>
-      </div>
-    </div>
+            <mat-form-field class="example-full-width">
+              <mat-label>Choose a date</mat-label>
+              <input matInput [matDatepickerFilter]="myFilter" [matDatepicker]="picker" required [(ngModel)]="datePicker" name="date" (dateChange)="onDateChange()">
+              <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+              <mat-datepicker #picker></mat-datepicker>
+            </mat-form-field>
+          </div>
+        </div>
 
-    <div *ngIf="datePicker != undefined">
+
+    <div *ngIf="datePicker != undefined && availability != undefined">
         <div class="form-group">
           <mat-form-field >
             <mat-label>Choose a Barber:</mat-label>
-            <mat-select matNativeControl required required [(ngModel)]="barber" name="barber" (selectionChange)="barberSelected(barber)"  >
+            <mat-select matNativeControl required required [(ngModel)]="appointment.barber.name" name="barber" (selectionChange)="barberSelected(appointment.barber.name)"  >
               <mat-option disabled value="">Select a barber</mat-option>
               <mat-option  value="noPreference">No preference</mat-option>
               <mat-option *ngFor="let barberOption of availability; let i = index" [value]="barberOption.barberName">{{barberOption.barberName}} </mat-option>
@@ -78,11 +79,11 @@
 
 
 
-      <div *ngIf="barber != undefined  && barber != ''">
+      <div *ngIf="appointment.barber.name != undefined  && appointment.barber.name != ''">
         <div class="form-group">
           <mat-form-field>
             <mat-label>time</mat-label>
-            <mat-select matNativeControl required [(ngModel)]="scheduleTime" name="scheduleTime">
+            <mat-select matNativeControl required [(ngModel)]="appointment.appointmentDate" name="appointmentDate">
               <mat-option  value="">Select a schedule</mat-option >
               <mat-option *ngFor="let time of barberAvailability.availableTimeSlots; let i = index" [value]="time">{{time | date:'shortTime'}} </mat-option>
             </mat-select>
