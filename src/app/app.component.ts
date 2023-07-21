@@ -9,9 +9,14 @@ import { Router } from '@angular/router';
 export class AppComponent implements OnInit {
   title = 'BarberShop';
   windowScrolled = false;
+  routeFlag!: boolean;
+
   constructor(private router: Router ) {}
 
   ngOnInit() {
+    const url = window.location.href;
+    url.includes('/login') || url.includes('/admin') ? this.routeFlag = true : this.routeFlag = false;
+
     window.addEventListener('scroll', () => {
       this.windowScrolled = window.pageYOffset !== 0;
     });

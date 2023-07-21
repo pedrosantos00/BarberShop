@@ -1,13 +1,22 @@
-<div class="to-top" (click)="scrollToTop()" [ngClass]="{ 'show-scrollTop': windowScrolled }">
-  <div class="text-center">
-  <i style="font-size: 25px;" class="fa fa-arrow-up" aria-hidden="true"></i>
-  <p>Back to Top</p>
-</div>
+
+<div *ngIf="!routeFlag else route" >
+  <div class="to-top" (click)="scrollToTop()" [ngClass]="{ 'show-scrollTop': windowScrolled }">
+    <div class="text-center">
+    <i style="font-size: 25px;" class="fa fa-arrow-up" aria-hidden="true"></i>
+    <p>Back to Top</p>
+  </div>
+  </div>
+
+  <app-header></app-header>
+  <app-about-us></app-about-us>
+  <app-services></app-services>
+  <app-barbers></app-barbers>
+  <app-contact></app-contact>
+  <app-footer></app-footer>
 </div>
 
-<app-header></app-header>
-<app-about-us></app-about-us>
-<app-services></app-services>
-<app-barbers></app-barbers>
-<app-contact></app-contact>
-<app-footer></app-footer>
+<ng-template #route>
+  <router-outlet></router-outlet>
+</ng-template>
+
+

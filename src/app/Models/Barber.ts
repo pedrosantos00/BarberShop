@@ -5,4 +5,10 @@ export class Barber {
   name!: string;
   password!: string;
   Appointments!: Appointment[];
+
+
+  role!: string;
+  token!: string;
+  refreshToken!: string;
+  refreshTokenExpiryTime!: Date;
 }

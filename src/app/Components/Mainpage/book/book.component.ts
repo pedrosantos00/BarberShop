@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { FormControl } from '@angular/forms';
+import { Router } from '@angular/router';
 import { Appointment } from 'src/app/Models/Appointment';
 import { AvailabilityTimeSlot } from 'src/app/Models/AvailabilityTimeSlot';
 import { Barber } from 'src/app/Models/Barber';
@@ -23,7 +24,7 @@ export class BookComponent {
   barberAvailability!: AvailabilityTimeSlot;
   appointment : Appointment = new Appointment();
 
-  constructor(private bookService: BookService, private barberService : BarberService) {}
+  constructor(private bookService: BookService, private barberService : BarberService, private router: Router) {}
 
   myFilter = (d: Date | null): boolean => {
     const day = (d || new Date()).getDay();
@@ -109,18 +110,14 @@ export class BookComponent {
     if (barber == 'noPreference') {
 
       if(this.barberAvailability != null || this.barberAvailability != undefined) {
-        // Reset for refresh dates
         this.barberAvailability = new AvailabilityTimeSlot();
       }
-       // Initialize this.barberAvailability as an empty object if it's undefined
        this.barberAvailability = this.barberAvailability || {};
        this.barberAvailability.availableTimeSlots = this.barberAvailability.availableTimeSlots || [];
 
-      // Iterate through each availability object
       this.availability?.forEach((availability) => {
-        // Iterate through each date in the current availability object
         availability.availableTimeSlots.forEach((date) => {
-          // Check if the date is not already present in the uniqueDates array
+
           if (!this.barberAvailability.availableTimeSlots.some((d) => d === date)) {
             this.barberAvailability.availableTimeSlots.push(date);
           }
@@ -141,7 +138,8 @@ export class BookComponent {
 
     this.bookService.bookAnAppointment(this.appointment).subscribe(
        (ok) => {
-      console.log('Appointment done:', ok);
+     alert("Appointment Confirmed")
+      window.location.reload();
     },
     (error) => {
       console.log('An error occurred:', error);

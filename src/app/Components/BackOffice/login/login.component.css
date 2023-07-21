@@ -1,0 +1,54 @@
+body {
+  background-image: url('/assets/img/loginBkgrnd.jpg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  min-height: 100vh;
+  margin: 0;
+  padding: 0;
+  color: white;
+}
+
+main{
+  background: rgba(1, 1, 1, 0.8);
+  border-radius: 5%;
+
+}
+
+.form-signin {
+  max-width: 330px;
+  padding: 1rem;
+}
+
+.form-signin .form-floating:focus-within {
+  z-index: 2;
+}
+
+
+
+
+
+.row.justify-content-center {
+  margin-top: 40px;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+}
+
+
+
+/* Firefox */
+input[type=number] {
+  -moz-appearance: textfield;
+}
+
+@media (max-width: 767px) {
+  .form-group.right-column {
+    margin-top: 20px;
+  }
+}
+
+
+

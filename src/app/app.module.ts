@@ -3,14 +3,14 @@ import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { HeaderComponent } from './Components/header/header.component';
-import { NavbarComponent } from './Components/navbar/navbar.component';
-import { AboutUsComponent } from './Components/about-us/about-us.component';
+import { HeaderComponent } from './Components/Mainpage/header/header.component';
+import { NavbarComponent } from './Components/Mainpage/navbar/navbar.component';
+import { AboutUsComponent } from './Components/Mainpage/about-us/about-us.component';
 import { ServicesComponent } from './Components/services/services.component';
-import { BarbersComponent } from './Components/barbers/barbers.component';
-import { ContactComponent } from './Components/contact/contact.component';
-import { BookComponent } from './Components/book/book.component';
-import { FooterComponent } from './Components/footer/footer.component';
+import { BarbersComponent } from './Components/Mainpage/barbers/barbers.component';
+import { ContactComponent } from './Components/Mainpage/contact/contact.component';
+import { BookComponent } from './Components/Mainpage/book/book.component';
+import { FooterComponent } from './Components/Mainpage/footer/footer.component';
 import { FormsModule } from '@angular/forms';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 
@@ -21,6 +21,9 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import {MatSelectModule} from '@angular/material/select';
+import { MainComponent } from './Components/BackOffice/main/main.component';
+import { LoginComponent } from './Components/BackOffice/login/login.component';
+import { TokenInterceptor } from './Interceptors/token.interceptor';
 
 
 
@@ -35,11 +38,14 @@ import {MatSelectModule} from '@angular/material/select';
     BarbersComponent,
     ContactComponent,
     BookComponent,
-    FooterComponent
+    FooterComponent,
+    MainComponent,
+    LoginComponent
   ],
   imports: [
     HttpClientModule,
     BrowserModule,
+    AppRoutingModule,
     AppRoutingModule,
     FormsModule,
     BrowserAnimationsModule,
@@ -50,7 +56,11 @@ import {MatSelectModule} from '@angular/material/select';
     MatSlideToggleModule,
     MatSelectModule
     ],
-  providers: [],
+    providers: [{
+      provide: HTTP_INTERCEPTORS,
+      useClass: TokenInterceptor,
+      multi: true
+    }],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
