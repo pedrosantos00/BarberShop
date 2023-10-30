@@ -2,7 +2,8 @@
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 15.2.4.
 
-![Uploading image.png…]()
+![Sem Título](https://github.com/pedrosantos00/BarberShop/assets/62798656/ac2449bb-8e3e-4bbb-9a9b-56c096620a62)
+
 
 ## Development server
 
